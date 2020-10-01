@@ -1,4 +1,4 @@
-# class-notes
+# Class Notes
 A repo for students to share their notes on class materials!
 
 Raluca great initiative inspired me to create this repo for you guys :) 
@@ -13,6 +13,6 @@ Raluca great initiative inspired me to create this repo for you guys :)
 
 **This repo belongs to you and your classmates, do your bit to make it a cool space :)**
 
-## a note on the .gitkeep files
+## A Note on the .gitkeep Files
 
-Each directory in this repo has been initialised with an empty **.gitkeep** file in order to have git track the module/sub-module organisation. *The .gitkeep file in each subdirectory can and should be systematically deleted once the subdirectory contains other files (and is thus tracked by git).
+Each directory in this repo has been initialised with an empty .gitkeep file in order to have git track the module/sub-module organisation. The .gitkeep file in each subdirectory can and should be systematically deleted once the subdirectory contains other files (and is thus tracked by git).
