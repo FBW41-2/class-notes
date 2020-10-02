@@ -1,0 +1,230 @@
+
+/* variables (they are like boxes when you move, you put things inside and write a word on it for what is inside) */
+$color: blue;
+
+/* now I can put the box wherever I want and sass will access the box and get the content of it where I askfor it */
+main {
+    background: $color;
+}
+
+/* we can reuse the box, but the content of the first box won't be accessible anymore, as sass reads from up every command */
+$color: red;
+
+footer {
+    background-color: $color;
+}
+
+/* in this situation we create the variable inside of a subcontext and it will apply only to that subcontext */ 
+/* the rest of the style will listen to the main variable, which is outside of any subcontext */
+
+$color: blue;
+main {
+    $color: red;
+    background: $color;
+}
+footer {
+    background-color: $color;
+}
+header {
+    background: $color;
+}
+
+/* mixin will give us a bunch of styles that we can insert wherever we want */
+/* you create a box, you give it a name, add multiple rules for the style and say where to include it */
+
+@mixin reset {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    @include reset;
+}
+
+footer {
+    @include reset;
+}
+
+/* if you have a variable inside the mixin it is not valid outside the mixin */
+
+@mixin reset {
+    $spacing: 0;
+    margin: $spacing:;
+    padding: $spacing:;
+}
+
+main {
+    @include reset;
+}
+
+footer {
+    @include reset;
+}
+
+/* you can tell the mixin to use more options */
+/* you have a box where you want to rearange the things inside from the outside and we create some holes, which get names (element-color in this case), to help us rearange our stuff */
+
+@mixin paint($element-color) {
+background-color: $element-color;   
+color: $element-color;
+}
+
+main {
+    @include paint($element-color: red);
+}
+
+footer {
+    @include paint($element-color: blue);
+}
+
+/* we can also use it without the whole name.
+he will read the instructions from left to right */
+
+@mixin paint($element-color, $text-color) {
+    background-color: $element-color;   
+    color: $text-color;
+    }
+    
+    main {
+        @include paint(red, white);
+    }
+    
+    footer {
+        @include paint(blue, yellow);
+    }
+
+/* as we already saw, we can use at any time the subcontext variables and give them the values we need */   
+/* the variables inside the brackets are called arguments and they exist to create these holes */ 
+
+ @mixin paint($element-color, $text-color) {
+    background-color: $element-color;   
+    color: $text-color;
+    }
+        
+main {
+    @include paint($element-color: red, $text-color: white);
+    }
+        
+footer {
+     @include paint($element-color: blue, $text-color: yellow);
+    }
+
+/* maps are lists */
+/* we need to attach a label to each element of the box, so we can pull the label without opening the box */
+
+$sizes: (
+    'medium': 50px,
+    'small':40px,
+    'large':60px,
+);
+
+$colors: (
+    'primary': yellow,
+    'alert': red,
+    'calm': blue,
+)
+
+/* from the box $sizes get me the label ($key) 'small' and label 'primary' */
+.small-box {
+    width: map-get($map: $sizes, $key: 'small'); 
+    height: map-get($map: $sizes, $key: 'small');
+    background: map-get($map: $colors, $key: 'primary');
+}
+
+.small-circle {
+    width: map-get($map: $sizes, $key: 'small');
+    height: map-get($map: $sizes, $key: 'small');
+    border-radius: 50%;
+    background: map-get($map: $colors, $key: 'primary');
+}
+
+/* from the box $sizes get me the label ($key) medium */
+.medium-box {
+    width: map-get($map: $sizes, $key: 'medium');
+    height: map-get($map: $sizes, $key: 'medium');
+}
+
+.medium-circle {
+    width: map-get($map: $sizes, $key: 'medium');
+    height: map-get($map: $sizes, $key: 'medium');
+    border-radius: 50%;
+}
+/* we can also use the keys only by their values, we just have to pay attention to use the correct order */
+.large-box {
+    width: map-get($map: $sizes, 'large');
+    height: map-get($map: $sizes, 'large');
+}
+
+.large-circle {
+    width: map-get($map: $sizes, $key: 'large');
+    height: map-get($map: $sizes, $key: 'large');
+    border-radius: 50%;
+}
+
+/* in a mixin you are creating templates for different things
+in map you only have lists of values */ 
+
+/* the mixins help us have a cleaner and shorter code ;) */
+
+/* we can create a mixin with a more general argument (size) for a certain situation and call for the needed values from the maps inside our contexts (inside the .small-box I will ask for the 'small' value and so on) */
+
+@mixin element-size($size){
+    width: map-get($sizes, $size); 
+    height: map-get($map: $sizes, $key: $size);
+}
+
+.small-box {
+    @include element-size($size: 'small');
+    background: map-get($map: $colors, $key: 'primary');
+}
+
+.small-circle {
+    @include element-size('small');
+    border-radius: 50%;
+}
+
+
+/* you can set a default value for your argument like shape or size, predefining what is going to happen */
+
+@mixin shape($size, $circle: yes) {
+    width: map-get($sizes, $size); 
+    height: map-get($map: $sizes, $key: $size);
+
+    @if $size == 'small' {
+        display: inline-block;
+    }
+    
+    @if $circle == 'yes' {
+        background: pink;
+        border-radius: 50%;
+        /* this is a comparison in which we compare two different values; if we dont add this comparison it will always be $circle: no the default */
+    } @else {
+        /* we can add any value we want or need */
+        background: blue;
+        /* if we only need the @if instruction, the @else instruction is not mandatory, it will work even without it */
+    }  
+    @if $circle == 'ellipsis' {
+        width: 50px;
+        border-radius: 40% 50%;
+    }
+}
+
+.small-box {
+    @include shape($size: 'small'); /*this will continue to be a box even without calling for the $circle: no argument*/
+    background: map-get($map: $colors, $key: 'primary');
+}
+
+.small-circle {
+    @include shape($size: 'small', $circle: yes); /* this will be a circle by calling the $circle: yes comparison from the mixin */
+}
+
+.medium-box {
+    @include shape('medium');
+}
+
+.medium-circle {
+    @include shape('medium', $circle: yes);
+}
+
+
+
