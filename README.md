@@ -1,6 +1,6 @@
 # Basic Digital Literacy
 ## Shell (Terminal) Commands
-[Mamunas Cheat Sheet](https://docs.google.com/spreadsheets/d/1oCCUP7C_eDX4O_-E4fCQP6bwPKplMukRkMidXf-gMDo/edit?usp=sharing)
+* [Mamunas Cheat Sheet](https://docs.google.com/spreadsheets/d/1oCCUP7C_eDX4O_-E4fCQP6bwPKplMukRkMidXf-gMDo/edit?usp=sharing)
 
 # Class Notes
 A repo for students to share their notes on class materials!
